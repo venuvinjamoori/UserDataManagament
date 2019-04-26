@@ -1,0 +1,67 @@
+Oracle queries:
+===============
+
+Table1: MCB_USER_INFO 
+ Columns: 
+
+USER_ID Auto generated, PrimaryKey,
+USER_NAME VARCHAR(255) NOT NULL,
+PASSWORD_HASH VARCHAR(255) NOT NULL,
+USER_ROLE VARCHAR(20),
+ROLE_DESCRIPTION VARCHAR(255)
+USER_ACTIVE VARCHAR(1),
+CREATED_DATE  DATE
+UPDATED_DATE DATE
+
+-----------------------------------------------
+STEP1:-Create query for MCB_USER_INFO:
+
+CREATE TABLE MCB_USER_INFO(
+         USER_ID NUMBER(10) NOT NULL,
+	USER_NAME VARCHAR(255) NOT NULL,
+	 PASSWORD_HASH VARCHAR(255) NOT NULL,
+	USER_ROLE VARCHAR(20),
+	ROLE_DESCRIPTION VARCHAR(255),
+	USER_ACTIVE VARCHAR(1),
+	CREATED_DATE  DATE NOT NULL,
+	UPDATED_DATE DATE
+	);
+
+---------------------------------------------------------
+STEP2:-Adding Primary Key for MCB_USER_INFO:
+
+ALTER TABLE MCB_USER_INFO ADD (
+  CONSTRAINT USER_pk PRIMARY KEY (USER_ID));
+
+---------------------------------------------
+STEP3:-Creating sequence for MCB_USER_INFO:
+
+CREATE SEQUENCE user_id_seq  START WITH 1;
+
+--------------------------------------------------------
+STEP4:-Creating Trigger for MCB_USER_INFO:
+
+CREATE OR REPLACE TRIGGER MCB_USER_ID_SEQ_TRIGGER
+BEFORE INSERT ON MCB_USER_INFO
+FOR EACH ROW
+BEGIN
+	IF :new.USER_ID IS NULL THEN
+		SELECT user_id_seq.nextval INTO :new.USER_ID FROM DUAL;
+	END IF;
+END;
+/
+---------------------------------------------------------------------------
+
+STEP5:-Insert Query for MCB_USER_INFO:
+
+INSERT INTO MCB_USER_INFO 
+ (	USER_NAME ,
+	 PASSWORD_HASH,
+	USER_ROLE ,
+	ROLE_DESCRIPTION ,
+	USER_ACTIVE ,
+	CREATED_DATE ,
+	UPDATED_DATE) values('MCB_USER1','XX_HASHED_PWD1','Admin1','MCB Administrator1','N',current_timestamp,current_timestamp);
+
+
+
